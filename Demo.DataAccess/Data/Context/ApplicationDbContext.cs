@@ -4,26 +4,21 @@
 
 namespace Demo.DataAccess.Data.Context
 {
-    internal class ApplicationDbContext : DbContext
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-
-        }
 
 
-   
-
+        
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
 
-        //    optionsBuilder.UseSqlServer("ConnectionString");
+            //    optionsBuilder.UseSqlServer("ConnectionString");
 
 
 
-        //}
+            //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,7 +35,7 @@ namespace Demo.DataAccess.Data.Context
         }
 
 
-        public DbSet<Department> Departments { get; set; } 
+         public DbSet<Department> Departments { get; set; } 
 
 
 

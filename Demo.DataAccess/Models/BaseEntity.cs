@@ -2,7 +2,7 @@
 
 namespace Demo.DataAccess.Models
 {
-    internal class BaseEntity   // Include the commen propertoies [ Parent ] 
+    public class BaseEntity   // Include the commen propertoies [ Parent ] 
     {
 
         public int Id { get; set; }

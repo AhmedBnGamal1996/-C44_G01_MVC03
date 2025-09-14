@@ -1,19 +1,19 @@
-﻿using Demo.DataAccess.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Demo.DataAccess.Data.Context;
+﻿using Demo.DataAccess.Data.Context;
 
 
 namespace Demo.DataAccess.Data.Repository
 {
-    public class DepartmentRepository(ApplicationDbContext _dbContext)
+    internal class DepartmentRepository(ApplicationDbContext dbContext)
     {
       
+        private readonly ApplicationDbContext _dbContext ;  // Inside Scope 
+
+
+
+
+
+    
+
 
 
         // 5 Crud Operations
@@ -24,20 +24,15 @@ namespace Demo.DataAccess.Data.Repository
 
 
 
-        public Department GetById (int id )
+        public Department? GetById (int id )
         {
-
-
-            var department = _dbContext.Departments.Find(id); 
-
-            return department; 
 
 
 
 
 
         }
-
+        
 
 
 
