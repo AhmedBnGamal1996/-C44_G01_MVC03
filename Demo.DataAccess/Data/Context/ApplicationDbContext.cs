@@ -1,23 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Demo.DataAccess.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Demo.DataAccess.Data.Configurations;
-using Microsoft.EntityFrameworkCore.SqlServer;
-
-
-
-
+﻿using System.Reflection;
 
 
 
 namespace Demo.DataAccess.Data.Context
 {
-    public class ApplicationDbContext : DbContext
+    internal class ApplicationDbContext : DbContext
     {
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -40,14 +27,20 @@ namespace Demo.DataAccess.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+           // modelBuilder.ApplyConfiguration<Department>(new Configurations.DepartmentConifgurations());
+
+
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        
+        
         }
 
 
-
-
-
-        public DbSet<Department> Departments { get; set; }
+        public DbSet<Department> Departments { get; set; } 
 
 
 

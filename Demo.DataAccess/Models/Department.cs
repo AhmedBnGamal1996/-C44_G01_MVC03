@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Demo.DataAccess.Models
 {
-    internal class Department : BaseEntity
+    internal class Department : BaseEntity  
     {
 
         public string Name { get; set; } = null!; 
