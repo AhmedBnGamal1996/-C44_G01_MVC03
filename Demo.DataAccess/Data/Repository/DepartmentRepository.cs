@@ -3,16 +3,23 @@
 
 namespace Demo.DataAccess.Data.Repository
 {
-    internal class DepartmentRepository(ApplicationDbContext dbContext)
+    public class DepartmentRepository(ApplicationDbContext _dbContext) : IDepartmentRepository
     {
-      
-        private readonly ApplicationDbContext _dbContext ;  // Inside Scope 
+        public IEnumerable<Department> GetAll(bool withTracking = false)
+        {
+            if (withTracking)
+            {
+                return _dbContext.Departments.ToList();
+            }
+
+            else return _dbContext.Departments.AsNoTracking().ToList();
 
 
 
 
 
-    
+
+        }
 
 
 
@@ -24,15 +31,36 @@ namespace Demo.DataAccess.Data.Repository
 
 
 
-        public Department? GetById (int id )
+        public Department? GetById(int id) => _dbContext.Departments.Find(id);
+
+        public int Add(Department department)
         {
-
-
-
-
-
+            _dbContext.Departments.Add(department);
+            return _dbContext.SaveChanges();
         }
-        
+
+
+        public int Update(Department department)
+        {
+            _dbContext.Departments.Update(department);
+            return _dbContext.SaveChanges();
+        }
+
+
+
+        public int Remove(Department department)
+        {
+            _dbContext.Departments.Remove(department);
+            return _dbContext.SaveChanges();
+        }
+
+
+
+
+
+
+
+
 
 
 

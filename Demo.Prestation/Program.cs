@@ -1,4 +1,5 @@
 using Demo.DataAccess.Data.Context;
+using Demo.DataAccess.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
  
@@ -32,9 +33,9 @@ namespace Demo.Prestation
 
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"))
 
-            ); 
+            );
 
-
+            builder.Services.AddScoped<IDepartmentRepository, TestMockDepartmentRepository>(); 
 
 
             #endregion
