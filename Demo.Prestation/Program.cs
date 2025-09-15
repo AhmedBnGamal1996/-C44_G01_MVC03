@@ -1,5 +1,9 @@
+using Demo.BusinessLogic.Services.Classes;
+using Demo.BusinessLogic.Services.Interfaces;
 using Demo.DataAccess.Data.Context;
 using Demo.DataAccess.Data.Repository;
+using Demo.DataAccess.Data.Repository.Classes;
+using Demo.DataAccess.Data.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
  
@@ -35,7 +39,10 @@ namespace Demo.Prestation
 
             );
 
-            builder.Services.AddScoped<IDepartmentRepository, TestMockDepartmentRepository>(); 
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            
+
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
 
             #endregion

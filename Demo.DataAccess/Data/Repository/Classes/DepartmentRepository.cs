@@ -1,7 +1,8 @@
 ﻿using Demo.DataAccess.Data.Context;
+using Demo.DataAccess.Data.Repository.Interfaces;
 
 
-namespace Demo.DataAccess.Data.Repository
+namespace Demo.DataAccess.Data.Repository.Classes
 {
     public class DepartmentRepository(ApplicationDbContext _dbContext) : IDepartmentRepository
     {
