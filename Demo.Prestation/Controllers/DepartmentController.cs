@@ -7,25 +7,16 @@ namespace Demo.Prestation.Controllers
 {
 
 
-    public class DepartmentController : Controller
+    public class DepartmentController(IDepartmentService _departmentService) : Controller
     {
-
-
-
-
-        private readonly IDepartmentService _departmentSrevice; 
-
-        public DepartmentController(IDepartmentService departmentService )
-        {
-            this._departmentSrevice = departmentService;
-        }
 
 
 
 
         public IActionResult Index()
         {
-            return View();
+            var departments = _departmentService.GetAllDepartments();
+            return View(departments);
         }
 
 
