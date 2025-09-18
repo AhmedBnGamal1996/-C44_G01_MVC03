@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using Demo.DataAccess.Models.DepartmentModule;
+using Demo.DataAccess.Models.EmployeeModule;
+using System.Reflection;
 
 
 
@@ -36,6 +38,7 @@ namespace Demo.DataAccess.Data.Context
 
 
          public DbSet<Department> Departments { get; set; } 
+         public DbSet<Employee> Employees { get; set; }
 
 
 

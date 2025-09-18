@@ -39,7 +39,7 @@ namespace Demo.Prestation
 
             );
 
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, IDepartmentRepository>();
             
 
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
