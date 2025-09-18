@@ -241,5 +241,102 @@ namespace Demo.Prestation.Controllers
 
 
 
+        #region Delete
+        // GET ==> render the view 
+
+
+
+        //[HttpGet]
+        //public IActionResult Delete(int? id)
+        //{
+        //    if (!id.HasValue) return BadRequest();
+        //    var department = _departmentService.GetDepartmentById(id.Value);
+        //    if (department == null) return NotFound();
+        //    return View(department);
+        //}
+
+
+
+
+        [HttpPost]
+
+        public IActionResult Delete(int id)
+        {
+
+
+            if (id ==0 ) return BadRequest();
+
+            try
+
+            {
+                bool isDeleted = _departmentService.DeleteDepartment(id);
+
+                if (isDeleted) return RedirectToAction(nameof(Index));
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Department can not be deleted");
+                    return RedirectToAction(nameof(Delete) , new {id});
+                }
+            }
+
+
+
+
+            catch (Exception ex)
+            {
+                if (_env.IsDevelopment())
+                {
+                    _logger.LogError($"Department can not be deleted because : {ex.Message}");
+                }
+                else
+                {
+                    _logger.LogError($"Department can not be deleted brcause {ex}");
+                    return View("ErrorView");
+                }
+               
+            }
+            return RedirectToAction(nameof(Delete), new { id });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
