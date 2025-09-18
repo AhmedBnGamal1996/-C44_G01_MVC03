@@ -3,6 +3,7 @@ using Demo.DataAccess.Models;
 using Demo.BusinessLogic.Services.Classes;
 using Demo.BusinessLogic.Services.Interfaces;
 using Demo.BusinessLogic.DTOS;
+using Demo.Prestation.viewModels;
 
 namespace Demo.Prestation.Controllers
 {
@@ -140,18 +141,89 @@ namespace Demo.Prestation.Controllers
 
         public IActionResult Edit (int? id )
         {
-            if (id.HasValue) return BadRequest();
+            if (!id.HasValue) return BadRequest();
             var department = _departmentService.GetDepartmentById(id.Value); 
             if (department == null) return NotFound();
 
+            var departmentVM = new DepartmentEditViewModel
+            {
+                Code = department.Code,
+                Name = department.Name,
+                Description = department.Description,
+                CreatedOn = department.CreatedOn.HasValue ? department.CreatedOn.Value : default
 
-            return View(department);
+
+
+
+            };
+
+            return View(departmentVM);
+
+
+
+            // return View(department);
         }
 
 
+        [HttpPost]
+
+        public IActionResult Edit(int? id,  DepartmentEditViewModel departmentVM)
+        {
+            if (ModelState.IsValid)
+            {
+
+                try
+
+
+                {
+                    if (!id.HasValue) return BadRequest();
+
+                    var updateDepartmentDto = new UpdateDepartmentDto
+                    {
+                        Id = id.Value,
+                        Code = departmentVM.Code,
+                        Name = departmentVM.Name,
+                        Description = departmentVM.Description,
+                        DateOfCreation = departmentVM.CreatedOn
+                    };
+
+
+                    int result = _departmentService.UpdateDepartment(updateDepartmentDto);
+
+
+                    if (result > 0) return RedirectToAction(nameof(Index));
+
+
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Department can not be updated");
+
+                    }
 
 
 
+                }
+
+
+
+                catch (Exception ex)
+                {
+                    if (_env.IsDevelopment())
+                    {
+                        _logger.LogError($"Department can not be updated because : {ex.Message}");
+                    }
+                    else
+                    {
+                        _logger.LogError($"Department can not be updated brcause {ex}");
+                        return View("ErrorView");
+                    }
+                   
+                }
+                return View(departmentVM);
+            }
+            return View(departmentVM);
+
+        }
 
 
 
