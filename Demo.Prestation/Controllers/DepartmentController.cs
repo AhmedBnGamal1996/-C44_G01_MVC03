@@ -4,6 +4,7 @@ using Demo.BusinessLogic.Services.Classes;
 using Demo.BusinessLogic.Services.Interfaces;
 using Demo.BusinessLogic.DTOS;
 using Demo.Prestation.viewModels;
+using Demo.BusinessLogic.DTOS.DepartmentDTOS;
 
 namespace Demo.Prestation.Controllers
 {

@@ -23,7 +23,7 @@ namespace Demo.DataAccess.Models.EmployeeModule
 
         public string? Phone { get; set; }
 
-        public DateOnly HiringDate { get; set; }
+        public DateTime HiringDate { get; set; }
 
 
         // Gender ==> Enum [ Female , Male ] 

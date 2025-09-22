@@ -1,6 +1,4 @@
-﻿
-
-namespace Demo.BusinessLogic.DTOS
+﻿namespace Demo.BusinessLogic.DTOS.DepartmentDTOS
 {
     public class DepartmentDto        // Get All ==> Validations
     {
