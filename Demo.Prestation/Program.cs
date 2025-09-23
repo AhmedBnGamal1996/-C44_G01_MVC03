@@ -5,6 +5,7 @@ using Demo.DataAccess.Data.Context;
 using Demo.DataAccess.Data.Repository;
 using Demo.DataAccess.Data.Repository.Classes;
 using Demo.DataAccess.Data.Repository.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
  
@@ -25,7 +26,15 @@ namespace Demo.Prestation
 
             #region DI Container 
 
-            builder.Services.AddControllersWithViews();
+
+              
+
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); 
+            });
+
+
 
             // builder.Services.AddScoped<ApplicationDbContext>();
 

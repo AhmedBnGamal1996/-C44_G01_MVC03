@@ -42,6 +42,8 @@ namespace Demo.Prestation.Controllers
 
 
         [HttpPost]
+
+        // [ValidateAntiForgeryToken]  // Attribute ==> Action Filter 
         public IActionResult Create(CreateDepartmentDto departmentDto)
         {
             if(ModelState.IsValid)      // Server Side Validation
