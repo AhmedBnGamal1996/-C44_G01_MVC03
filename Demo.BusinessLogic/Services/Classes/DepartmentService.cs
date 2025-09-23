@@ -13,7 +13,7 @@ namespace Demo.BusinessLogic.Services.Classes
         // Get All ==> Id , Code .Name , Description , DataOfCreation 
 
         public IEnumerable<DepartmentDto> GetAllDepartments()
-        {
+        { 
             // GEt ALl Repo 
 
             var departments = _departmentRepository.GetAll();

@@ -200,5 +200,62 @@ namespace Demo.Prestation.Controllers
 
 
 
+
+        #region Delete
+
+
+        [HttpPost]
+
+        public IActionResult Delete(int id)
+        {
+
+
+            if (id == 0) return BadRequest();
+
+            try
+
+            {
+                bool isDeleted = _employeeService.DeleteEmployee(id);
+
+                if (isDeleted) return RedirectToAction(nameof(Index));
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Employee can not be deleted");
+                    return RedirectToAction(nameof(Delete), new { id });
+                }
+            }
+
+
+
+
+            catch (Exception ex)
+            {
+                if (_env.IsDevelopment())
+                {
+                    _logger.LogError($"Employee can not be deleted because : {ex.Message}");
+                }
+                else
+                {
+                    _logger.LogError($"Employee can not be deleted brcause {ex}");
+                    return View("ErrorView");
+                }
+
+            }
+            return RedirectToAction(nameof(Delete), new { id });
+        }
+
+
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
     }
 }

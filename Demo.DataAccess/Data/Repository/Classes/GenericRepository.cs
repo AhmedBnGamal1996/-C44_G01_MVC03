@@ -29,10 +29,10 @@ namespace Demo.DataAccess.Data.Repository.Classes
         {
             if (withTracking)
             {
-                return _dbContext.Set<TEntity>().ToList();
+                return _dbContext.Set<TEntity>().Where(entity => entity.IsDeleted == false).ToList();
             }
 
-            else return _dbContext.Set<TEntity>().AsNoTracking().ToList();
+            else return _dbContext.Set<TEntity>().Where(entity => entity.IsDeleted == false).AsNoTracking().ToList();
 
 
 
