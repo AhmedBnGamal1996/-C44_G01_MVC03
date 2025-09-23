@@ -103,7 +103,23 @@ namespace Demo.Prestation.Controllers
         #endregion
 
 
+        #region Details 
 
+
+
+        [HttpGet]
+
+        public IActionResult Details(int? id)
+        {
+            if (!id.HasValue) return BadRequest();  // Error 400 
+            var employee = _employeeService.GetEmployeeById(id.Value);
+            if (employee == null) return NotFound();  // Error 404 
+
+
+            return View(employee);
+        }
+         
+        #endregion
 
 
 
