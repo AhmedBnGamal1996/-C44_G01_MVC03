@@ -54,8 +54,44 @@ namespace Demo.BusinessLogic.Services.Classes
         public IEnumerable<EmployeeDto> GetAllEmployees(bool withTracking = false)
         {
 
+            //_employeeRepository.GetAll(e => new EmployeeDto()
+            //{
+            //    Id = e.Id,
+            //    Age = e.Age,
+            //    Salary = e.Salary,
+            //    Name = e.Name
+            //}).Where(e=>e.Age > 27 ); 
+
+
+
+
+            //------------------------////////
+
+
+
+            //var employeeDto = _employeeRepository.GetIQueryable().Where(e => e.IsDeleted == false).Select
+            //    (e => new EmployeeDto()
+
+            //    {
+            //        Id = e.Id,
+            //        Age = e.Age,
+            //        Salary = e.Salary
+            //    }
+            //    );
+            //return employeeDto.ToList(); 
+
+
+
+
+            //------------------------////////
+
+
+
             var employees = _employeeRepository.GetAll(withTracking);
 
+
+
+            //------------------------////////
 
             //var employeeDto = employees.Select(e => new EmployeeDto
             //{

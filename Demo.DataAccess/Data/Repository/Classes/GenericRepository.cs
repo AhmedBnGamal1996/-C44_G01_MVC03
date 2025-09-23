@@ -3,6 +3,7 @@ using Demo.DataAccess.Data.Repository.Interfaces;
 using Demo.DataAccess.Models.DepartmentModule;
 using Demo.DataAccess.Models.EmployeeModule;
 using Demo.DataAccess.Models.Shared;
+using System.Linq.Expressions;
 
 namespace Demo.DataAccess.Data.Repository.Classes
 {
@@ -67,7 +68,31 @@ namespace Demo.DataAccess.Data.Repository.Classes
             return _dbContext.SaveChanges();
         }
 
-      
+
+
+        public IEnumerable<TEntity> GetIEnumerable()
+        {
+            return _dbContext.Set<TEntity>();
+        }
+
+        public IQueryable<TEntity> GetIQueryable()
+        {
+            return _dbContext.Set<TEntity>();
+        }
+
+
+
+        public IEnumerable<TResult> GetAll<TResult>(Expression<Func<TEntity, TResult>> selector)
+        {
+            return _dbContext.Set<TEntity>().Where(entity => entity.IsDeleted == false)
+                .Select(selector).ToList(); 
+
+
+        }
+
+
+
+
     }
 
 
