@@ -1,4 +1,4 @@
-﻿using Demo.BusinessLogic.DTOS;
+﻿using Demo.BusinessLogic.DTOS.DepartmentDTOS;
 using Demo.BusinessLogic.Factories;
 using Demo.BusinessLogic.Services.Interfaces;
 using Demo.DataAccess.Data.Context;
@@ -13,7 +13,7 @@ namespace Demo.BusinessLogic.Services.Classes
         // Get All ==> Id , Code .Name , Description , DataOfCreation 
 
         public IEnumerable<DepartmentDto> GetAllDepartments()
-        {
+        { 
             // GEt ALl Repo 
 
             var departments = _departmentRepository.GetAll();

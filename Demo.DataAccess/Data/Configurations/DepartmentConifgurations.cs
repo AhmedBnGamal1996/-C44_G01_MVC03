@@ -1,11 +1,10 @@
-﻿
-using Demo.DataAccess.Models;
+﻿using Demo.DataAccess.Models.DepartmentModule;
 
 namespace Demo.DataAccess.Data.Configurations
 {
-    internal class DepartmentConifgurations : IEntityTypeConfiguration<Department>
+    internal class DepartmentConifgurations : BaseEntityConfiguration<Department>, IEntityTypeConfiguration<Department>
     {
-        public void Configure(EntityTypeBuilder<Department> builder)
+        public new void Configure(EntityTypeBuilder<Department> builder)
         {
 
 
@@ -19,7 +18,7 @@ namespace Demo.DataAccess.Data.Configurations
 
             builder.Property(D => D.ModifiedOn).HasDefaultValueSql("getdate()");
 
-
+            base.Configure(builder);
 
 
 

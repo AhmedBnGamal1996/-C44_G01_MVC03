@@ -1,4 +1,5 @@
 ﻿using Demo.DataAccess.Data.Repository.Interfaces;
+using Demo.DataAccess.Models.DepartmentModule;
 using System;
 using System.Collections.Generic;
 using System.Linq;
