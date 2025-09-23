@@ -14,6 +14,8 @@ namespace Demo.DataAccess.Models.EmployeeModule
 
         ,PartTimeEmployee = 2
 
+        , Remote
+
 
 
 
