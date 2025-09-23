@@ -48,6 +48,8 @@ namespace Demo.Prestation
 
             builder.Services.AddScoped<IEmployeeRepository , EmployeeRepository>();
 
+            builder.Services.AddScoped<IEmployeeService , EmployeeService>();
+
 
             // builder.Services.AddAutoMapper(cfg => { } , typeof(MappingProfile).Assembly);
 

@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Demo.BusinessLogic.DTOS
+namespace Demo.BusinessLogic.DTOS.DepartmentDTOS
 {
     public class CreateDepartmentDto
     {
