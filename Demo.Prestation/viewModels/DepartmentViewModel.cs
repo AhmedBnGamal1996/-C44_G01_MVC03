@@ -1,6 +1,6 @@
 ﻿namespace Demo.Prestation.viewModels
 {
-    public class DepartmentEditViewModel
+    public class DepartmentViewModel
     {
 
 

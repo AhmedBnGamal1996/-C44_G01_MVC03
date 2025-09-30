@@ -17,7 +17,7 @@ namespace Demo.DataAccess.Data.Repository.Interfaces
         int Add(TEntity entity);
         IEnumerable<TEntity> GetAll(bool withTracking = false);
 
-        IEnumerable<TResult> GetAll<TResult>(Expression<Func<TEntity , TResult>> selector);
+       // IEnumerable<TResult> GetAll<TResult>(Expression<Func<TEntity , TResult>> selector);
 
 
 
@@ -25,9 +25,9 @@ namespace Demo.DataAccess.Data.Repository.Interfaces
         int Remove(TEntity entity);
         int Update(TEntity entity);
 
-        IEnumerable<TEntity> GetIEnumerable(); 
+        // IEnumerable<TEntity> GetIEnumerable(); 
 
-        IQueryable<TEntity> GetIQueryable();
+        // IQueryable<TEntity> GetIQueryable();
 
 
 
