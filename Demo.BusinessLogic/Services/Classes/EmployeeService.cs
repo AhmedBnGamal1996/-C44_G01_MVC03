@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Demo.BusinessLogic.Services.Classes
 {
-    public class EmployeeService(IEmployeeRepository _employeeRepository , IMapper _mapper) : IEmployeeService
+    public class EmployeeService(IUnitOfWork _unitOfWork, IMapper _mapper) : IEmployeeService
     {
 
 
@@ -21,7 +21,8 @@ namespace Demo.BusinessLogic.Services.Classes
         {
             var employee = _mapper.Map<CreatedEmployeeDto , Employee >(employeeDto);
 
-            return _employeeRepository.Add(employee);
+             _unitOfWork.EmployeeRepository.Add(employee);
+            return _unitOfWork.SaveChanges();
 
         }
 
@@ -34,14 +35,15 @@ namespace Demo.BusinessLogic.Services.Classes
         {
             // Soft Delete ==> Update [ IsDeleted True ] 
 
-            var employee = _employeeRepository.GetById(id); 
+            var employee = _unitOfWork.EmployeeRepository.GetById(id); 
 
             if(employee is null) 
                 return false;
             else
             {
                 employee.IsDeleted = true; 
-               return _employeeRepository.Update(employee)> 0 ? true : false;
+             
+                return _unitOfWork.SaveChanges() > 0 ? true : false;
             }
 
 
@@ -57,12 +59,12 @@ namespace Demo.BusinessLogic.Services.Classes
 
             if (!String.IsNullOrEmpty(EmployeeSearchName))
             {
-                employees = _employeeRepository.GetAll(e => e.Name.ToLower().Contains( EmployeeSearchName.ToLower() ) );
+                employees = _unitOfWork.EmployeeRepository.GetAll(e => e.Name.ToLower().Contains( EmployeeSearchName.ToLower() ) );
 
             }
             else
             {
-                employees = _employeeRepository.GetAll(withTracking);
+                employees = _unitOfWork.EmployeeRepository.GetAll(withTracking);
             }
 
 
@@ -73,56 +75,6 @@ namespace Demo.BusinessLogic.Services.Classes
 
             return employeeDto;
 
-            //_employeeRepository.GetAll(e => new EmployeeDto()
-            //{
-            //    Id = e.Id,
-            //    Age = e.Age,
-            //    Salary = e.Salary,
-            //    Name = e.Name
-            //}).Where(e=>e.Age > 27 ); 
-
-
-
-
-            //------------------------////////
-
-
-
-            //var employeeDto = _employeeRepository.GetIQueryable().Where(e => e.IsDeleted == false).Select
-            //    (e => new EmployeeDto()
-
-            //    {
-            //        Id = e.Id,
-            //        Age = e.Age,
-            //        Salary = e.Salary
-            //    }
-            //    );
-            //return employeeDto.ToList(); 
-
-
-
-
-            //------------------------////////
-
-
-
-
-
-            //------------------------////////
-
-            //var employeeDto = employees.Select(e => new EmployeeDto
-            //{
-            //    Id = e.Id,
-            //    Name = e.Name,
-            //    Age = e.Age,
-            //    Salary = e.Salary,
-            //    IsActive = e.IsActive,
-            //    Email = e.Email,
-            //    Gender = e.Gender.ToString(),
-            //    EmployeeType = e.EmployeeType.ToString()
-            //}); 
-
-            // Src ==> IEnumerable<Employee> , Dest ==> IEnumerable<EmployeeDto>
 
 
 
@@ -134,32 +86,12 @@ namespace Demo.BusinessLogic.Services.Classes
 
         public EmployeeDetailsDto? GetEmployeeById(int id)
         {
-           var employee = _employeeRepository.GetById(id);
+           var employee = _unitOfWork.EmployeeRepository.GetById(id);
 
             return employee is null ? null : _mapper.Map<EmployeeDetailsDto>(employee);
 
 
-            //    new EmployeeDetailsDto()
 
-            //{
-            //    Id = employee.Id,
-            //    Name = employee.Name,
-            //    Age = employee.Age,
-            //    Address = employee.Address,
-            //    Salary = employee.Salary,
-            //    IsActive = employee.IsActive,
-            //    Email = employee.Email,
-            //    PhoneNumber = employee.Phone,
-            //    HiringDate = DateOnly.FromDateTime(employee.HiringDate),
-            //    CreatedOn = employee.CreatedOn,
-            //    CreatedBy = 1,
-            //    ModifiedBy = 1,
-            //    EmployeeType = employee.EmployeeType.ToString(),
-            //    Gender = employee.Gender.ToString(),
-
-
-
-            //}; 
 
         }
 
@@ -168,8 +100,9 @@ namespace Demo.BusinessLogic.Services.Classes
 
         public int UpdateEmployee(UpdatedEmployeeDto employeeDto)
         {
-            return _employeeRepository.Update(_mapper.Map<UpdatedEmployeeDto , Employee>(employeeDto));
+             _unitOfWork.EmployeeRepository.Update(_mapper.Map<UpdatedEmployeeDto , Employee>(employeeDto));
 
+            return _unitOfWork.SaveChanges();
 
 
         }

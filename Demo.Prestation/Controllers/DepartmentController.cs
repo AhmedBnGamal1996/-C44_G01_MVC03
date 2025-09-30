@@ -30,13 +30,6 @@ namespace Demo.Prestation.Controllers
 
         public IActionResult Index()
         {
-            // ViewData["Message"] = "Hello from view data  ";
-
-            // ViewBag.Message = "Hello from view bag  ";
-
-            ViewData["Message"] = new DepartmentDto() { Name = "Test" }; 
-            ViewBag.Message = new DepartmentDto() { Name = "Test" };
-
 
 
             var departments = _departmentService.GetAllDepartments();
@@ -200,7 +193,7 @@ namespace Demo.Prestation.Controllers
         [HttpPost]
 
         public IActionResult Edit(int? id,  DepartmentViewModel departmentVM)
-        {
+            {
             if (ModelState.IsValid)
             {
 
@@ -276,16 +269,6 @@ namespace Demo.Prestation.Controllers
         #region Delete
         // GET ==> render the view 
 
-
-
-        //[HttpGet]
-        //public IActionResult Delete(int? id)
-        //{
-        //    if (!id.HasValue) return BadRequest();
-        //    var department = _departmentService.GetDepartmentById(id.Value);
-        //    if (department == null) return NotFound();
-        //    return View(department);
-        //}
 
 
 

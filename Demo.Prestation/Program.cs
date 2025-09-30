@@ -61,6 +61,8 @@ namespace Demo.Prestation
 
             builder.Services.AddScoped<IEmployeeService , EmployeeService>();
 
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
             // builder.Services.AddAutoMapper(cfg => { } , typeof(MappingProfile).Assembly);
 

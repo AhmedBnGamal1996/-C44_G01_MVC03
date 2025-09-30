@@ -47,25 +47,22 @@ namespace Demo.DataAccess.Data.Repository.Classes
 
         public TEntity? GetById(int id) => _dbContext.Set<TEntity>().Find(id);
 
-        public int Add(TEntity entity)
+        void Add(TEntity entity)
         {
             _dbContext.Set<TEntity>().Add(entity);
-            return _dbContext.SaveChanges();
         }
          
 
-        public int Update(TEntity entity)
+         void Update(TEntity entity)
         {
             _dbContext.Set<TEntity>().Update(entity);
-            return _dbContext.SaveChanges();
         }
 
 
 
-        public int Remove(TEntity entity)
+         void Remove(TEntity entity)
         {
             _dbContext.Set<TEntity>().Remove(entity);
-            return _dbContext.SaveChanges();
         }
 
 
@@ -95,6 +92,21 @@ namespace Demo.DataAccess.Data.Repository.Classes
 
             return _dbContext.Set<TEntity>().Where(predicate).Where(entity => entity.IsDeleted == false).ToList();
 
+        }
+
+        void IGenericRepository<TEntity>.Add(TEntity entity)
+        {
+            Add(entity);
+        }
+
+        void IGenericRepository<TEntity>.Remove(TEntity entity)
+        {
+            Remove(entity);
+        }
+
+        void IGenericRepository<TEntity>.Update(TEntity entity)
+        {
+            Update(entity);
         }
     }
 

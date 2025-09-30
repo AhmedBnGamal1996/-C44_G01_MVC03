@@ -14,7 +14,7 @@ namespace Demo.DataAccess.Data.Repository.Interfaces
 
 
 
-        int Add(TEntity entity);
+        void Add(TEntity entity);
         IEnumerable<TEntity> GetAll(bool withTracking = false);
 
         // IEnumerable<TResult> GetAll<TResult>(Expression<Func<TEntity , TResult>> selector);
@@ -25,8 +25,8 @@ namespace Demo.DataAccess.Data.Repository.Interfaces
 
 
         TEntity? GetById(int id);
-        int Remove(TEntity entity);
-        int Update(TEntity entity);
+         void Remove(TEntity entity);
+         void Update(TEntity entity);
 
         // IEnumerable<TEntity> GetIEnumerable(); 
 

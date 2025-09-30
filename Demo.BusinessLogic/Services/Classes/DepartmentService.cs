@@ -1,40 +1,34 @@
 ﻿using Demo.BusinessLogic.DTOS.DepartmentDTOS;
 using Demo.BusinessLogic.Factories;
 using Demo.BusinessLogic.Services.Interfaces;
-using Demo.DataAccess.Data.Context;
 using Demo.DataAccess.Data.Repository.Interfaces;
-using Demo.DataAccess.Models;
 
 namespace Demo.BusinessLogic.Services.Classes
 {
-    public class DepartmentService(IDepartmentRepository _departmentRepository) : IDepartmentService
+    public class DepartmentService(IUnitOfWork _unitOfWork) : IDepartmentService
     {
 
         // Get All ==> Id , Code .Name , Description , DataOfCreation 
 
-        public IEnumerable<DepartmentDto> GetAllDepartments()
+        public IEnumerable<DepartmentDto> GetAllDepartments(bool withTracking = false)
         { 
             // GEt ALl Repo 
 
-            var departments = _departmentRepository.GetAll();
+            var departments = _unitOfWork.DepartmentRepository.GetAll(withTracking);
             return departments.Select(d => d.ToDepartmentDto());
 
 
         }
-
+            
 
 
         // GEt By ID 
 
         public DepartmentDetailsDto? GetDepartmentById(int id)
         {
-            var department = _departmentRepository.GetById(id);
+            var department = _unitOfWork.DepartmentRepository.GetById(id);
 
 
-            //if (department == null)
-            //{
-            //    return null;
-            //}
             // Mapping Types :- 
             // Auto Mapping ==> PAckage [ AutoMapper ] 
             // Extention MEthod MApping 
@@ -58,26 +52,33 @@ namespace Demo.BusinessLogic.Services.Classes
         public int AddDepartment(CreateDepartmentDto departmentDto)
         {
 
-            return _departmentRepository.Add(departmentDto.ToEntity());
+            _unitOfWork.DepartmentRepository.Add(departmentDto.ToEntity());
+            return _unitOfWork.SaveChanges();
 
         }
 
 
         public int UpdateDepartment(UpdateDepartmentDto updateDepartmentDto)
         {
+           _unitOfWork.DepartmentRepository.Update(updateDepartmentDto.ToEntity());
 
-            return _departmentRepository.Update(updateDepartmentDto.ToEntity());
+
+            return _unitOfWork.SaveChanges();
+
+
+
+
 
         }
 
 
         public bool DeleteDepartment(int id)
         {
-            var department = _departmentRepository.GetById(id);
+            var department = _unitOfWork.DepartmentRepository.GetById(id);
             if (department is null) return false;
 
-            int numsOfRows = _departmentRepository.Remove(department);
-            return numsOfRows > 0 ? true : false;
+            _unitOfWork.DepartmentRepository.Remove(department);
+            return _unitOfWork.SaveChanges() > 0 ? true : false;
 
 
 
