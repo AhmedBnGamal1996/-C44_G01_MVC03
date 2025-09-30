@@ -3,6 +3,7 @@ using Demo.DataAccess.Models.DepartmentModule;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +17,11 @@ namespace Demo.DataAccess.Data.Repository
         }
 
         public IEnumerable<Department> GetAll(bool withTracking = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Department> GetAll(Expression<Func<Department, bool>> predicate)
         {
             throw new NotImplementedException();
         }

@@ -51,8 +51,27 @@ namespace Demo.BusinessLogic.Services.Classes
 
 
 
-        public IEnumerable<EmployeeDto> GetAllEmployees(bool withTracking = false)
+        public IEnumerable<EmployeeDto> GetAllEmployees(string? EmployeeSearchName, bool withTracking = false)
         {
+            IEnumerable<Employee> employees;
+
+            if (!String.IsNullOrEmpty(EmployeeSearchName))
+            {
+                employees = _employeeRepository.GetAll(e => e.Name.ToLower().Contains( EmployeeSearchName.ToLower() ) );
+
+            }
+            else
+            {
+                employees = _employeeRepository.GetAll(withTracking);
+            }
+
+
+            var employeeDto = _mapper.Map<IEnumerable<Employee> , IEnumerable<EmployeeDto>>(employees);
+
+
+
+
+            return employeeDto;
 
             //_employeeRepository.GetAll(e => new EmployeeDto()
             //{
@@ -87,8 +106,6 @@ namespace Demo.BusinessLogic.Services.Classes
 
 
 
-            var employees = _employeeRepository.GetAll(withTracking);
-
 
 
             //------------------------////////
@@ -107,12 +124,6 @@ namespace Demo.BusinessLogic.Services.Classes
 
             // Src ==> IEnumerable<Employee> , Dest ==> IEnumerable<EmployeeDto>
 
-            var employeeDto = _mapper.Map<IEnumerable<Employee> , IEnumerable<EmployeeDto>>(employees);
-
-
-
-
-            return employeeDto;
 
 
         }

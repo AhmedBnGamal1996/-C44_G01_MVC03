@@ -17,7 +17,10 @@ namespace Demo.DataAccess.Data.Repository.Interfaces
         int Add(TEntity entity);
         IEnumerable<TEntity> GetAll(bool withTracking = false);
 
-       // IEnumerable<TResult> GetAll<TResult>(Expression<Func<TEntity , TResult>> selector);
+        // IEnumerable<TResult> GetAll<TResult>(Expression<Func<TEntity , TResult>> selector);
+
+
+        IEnumerable<TEntity> GetAll(Expression<Func<TEntity , bool>> predicate); 
 
 
 

@@ -22,11 +22,11 @@ namespace Demo.Prestation.Controllers
         #region Index 
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string? EmployeeSearchName)
         {
 
 
-            var employees = _employeeService.GetAllEmployees();
+            var employees = _employeeService.GetAllEmployees(EmployeeSearchName);
             return View(employees);
         }
 
