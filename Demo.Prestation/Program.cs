@@ -27,11 +27,11 @@ namespace Demo.Prestation
             #region DI Container 
 
 
-              
+
 
             builder.Services.AddControllersWithViews(options =>
             {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); 
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
 
 
@@ -39,15 +39,17 @@ namespace Demo.Prestation
             // builder.Services.AddScoped<ApplicationDbContext>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-
+            { 
             // options.UseSqlServer("ConnectionString")
 
             // options.UseSqlServer(builder.Configuration["ConnectionString:DefaultConnectiosString"])
             // options.UseSqlServer(builder.Configuration.GetSection("ConnectionString")["DefaultConnectionString"]); 
 
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"))
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+                options.UseLazyLoadingProxies();
 
-            );
+
+            });
 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             
