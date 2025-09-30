@@ -1,18 +1,11 @@
 ﻿using Demo.DataAccess.Models.EmployeeModule;
 using Demo.DataAccess.Models.Shared;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Demo.BusinessLogic.DTOS.EmployeeDTOS
+namespace Demo.Prestation.viewModels
 {
-    public class CreatedEmployeeDto
+    public class EmployeeViewModel
     {
-
-
 
         [Required(ErrorMessage = "Name Can't Be Null")]
         [MaxLength(50, ErrorMessage = "Max length should be 50 character")]
@@ -46,8 +39,21 @@ namespace Demo.BusinessLogic.DTOS.EmployeeDTOS
 
         public EmployeeType EmployeeType { get; set; }
 
-        public  int? DepartmentId { get; set; }
+
+        [Display(Name = "Department")]
+        public int? DepartmentId { get; set; }
+
+
+
+
+
+
 
 
     }
+
+
+
+
+
 }
