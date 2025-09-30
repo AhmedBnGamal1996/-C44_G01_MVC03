@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Demo.DataAccess.Models
+﻿namespace Demo.DataAccess.Models.Shared
 {
-    internal class BaseEntity   // Include the commen propertoies [ Parent ] 
+    public class BaseEntity   // Include the commen propertoies [ Parent ] 
     {
 
         public int Id { get; set; }

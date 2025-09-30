@@ -1,53 +1,44 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Demo.DataAccess.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Demo.DataAccess.Data.Configurations;
-using Microsoft.EntityFrameworkCore.SqlServer;
-
-
-
-
+﻿using Demo.DataAccess.Models.DepartmentModule;
+using Demo.DataAccess.Models.EmployeeModule;
+using System.Reflection;
 
 
 
 namespace Demo.DataAccess.Data.Context
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-
-        }
 
 
-   
-
+        
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
 
-        //    optionsBuilder.UseSqlServer("ConnectionString");
+            //    optionsBuilder.UseSqlServer("ConnectionString");
 
 
 
-        //}
+            //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+           // modelBuilder.ApplyConfiguration<Department>(new Configurations.DepartmentConifgurations());
+
+
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        
+        
         }
 
 
-
-
-
-        public DbSet<Department> Departments { get; set; }
+         public DbSet<Department> Departments { get; set; } 
+         public DbSet<Employee> Employees { get; set; }
 
 
 

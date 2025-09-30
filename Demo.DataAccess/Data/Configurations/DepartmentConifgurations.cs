@@ -1,27 +1,29 @@
-﻿using Demo.DataAccess.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Demo.DataAccess.Models.DepartmentModule;
 
 namespace Demo.DataAccess.Data.Configurations
 {
-    internal class DepartmentConifgurations : IEntityTypeConfiguration<Department>
+    internal class DepartmentConifgurations : BaseEntityConfiguration<Department>, IEntityTypeConfiguration<Department>
     {
-        public void Configure(EntityTypeBuilder<Department> builder)
+        public new void Configure(EntityTypeBuilder<Department> builder)
         {
 
 
-            //builder.
-            //builder.
-            //builder.
-            //builder.
-            //builder.
-            //builder.
+            builder.Property(D => D.Id).UseIdentityColumn(10, 10); 
 
+            builder.Property(D => D.Name).HasColumnType("varchar(20)");
+
+            builder.Property(D => D.Code).HasColumnType("varchar(20)");
+
+            builder.Property(D=>D.CreatedOn).HasDefaultValueSql("getdate()");
+
+            builder.Property(D => D.ModifiedOn).HasDefaultValueSql("getdate()");
+
+            builder.HasMany(D=>D.Employees)
+                .WithOne(E=>E.Department)
+                .HasForeignKey(E=>E.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            base.Configure(builder);
 
 
 
