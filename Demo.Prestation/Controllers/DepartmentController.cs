@@ -15,11 +15,35 @@ namespace Demo.Prestation.Controllers
 
 
         #region Index 
+        // View Data , ViewBag ==> ViewStorage ==> Deal with the same storage 
+        // Extra info [ Extra Data ] 
+        // Send Controller ==> View 
+        // Send View ==> Partial View 
+        // Send View ==> Layout
+        // ViewData [ Safe ] [ .Net 3.5 ] 
+        // ViewBag [ UnSafe ] [ .Net 4.0 ] , Dynamic  
+
+
+
         [HttpGet]
+
+
         public IActionResult Index()
         {
+            // ViewData["Message"] = "Hello from view data  ";
+
+            // ViewBag.Message = "Hello from view bag  ";
+
+            ViewData["Message"] = new DepartmentDto() { Name = "Test" }; 
+            ViewBag.Message = new DepartmentDto() { Name = "Test" };
+
+
+
             var departments = _departmentService.GetAllDepartments();
             return View(departments);
+        
+        
+        
         }
 
 

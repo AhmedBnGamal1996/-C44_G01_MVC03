@@ -2,7 +2,39 @@
 @model IEnumerable<DepartmentDto>
 @{
     ViewData["Title"] = "Index";
+    var departmentDto = ViewData["Message"] as DepartmentDto;
 }
+
+<div class="alert alert-success">
+
+    
+    @* @ViewData["Message"] *@
+    
+    @departmentDto.Name
+
+    @* 
+        ViewData ==> Enforce Type Safety [ Strongly Ty[ed - Compiler ] 
+
+        ViewBag ==> Can not enforce Type Safety [ Weakly Typed - Runtime - CLR  ]
+
+        Readable ==> ViewBag [ No Casting ]
+        Performance ==> ViewData [ Typed Checking at compile time  ]
+    *@
+
+
+
+
+</div>
+
+<div class="alert alert-danger">
+
+    @ViewBag.Message.Name
+
+
+</div>
+
+
+
 
 <h1>All Departments</h1>
 <br />
