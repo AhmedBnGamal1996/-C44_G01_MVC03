@@ -26,6 +26,8 @@ namespace Demo.BusinessLogic.DTOS.EmployeeDTOS
 
         public int DepartmentId { get; set; }
 
+        public string? ImaageName { get; set; }
+
 
     }
 }
