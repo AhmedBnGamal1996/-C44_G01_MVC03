@@ -39,6 +39,9 @@ namespace Demo.DataAccess.Models.EmployeeModule
         public  int? DepartmentId { get; set; }
 
 
+        public string? ImageName { get; set; }
+
+
 
 
 

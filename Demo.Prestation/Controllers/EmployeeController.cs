@@ -66,7 +66,9 @@ namespace Demo.Prestation.Controllers
                         HiringDate = employeeViewModel.HiringDate,
                         EmployeeType = employeeViewModel.EmployeeType,
                         DepartmentId = employeeViewModel.DepartmentId,
-                        Gender = employeeViewModel.Gender
+                        Gender = employeeViewModel.Gender ,
+                        Image = employeeViewModel.Image
+
                     });
                     if (result > 0)
                     {
