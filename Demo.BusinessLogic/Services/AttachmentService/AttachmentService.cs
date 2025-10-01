@@ -44,13 +44,6 @@ namespace Demo.BusinessLogic.Services.AttachmentService
 
             return fileName;
 
-
-
-
-
-
-
-
         }
 
 
