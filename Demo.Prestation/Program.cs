@@ -6,6 +6,8 @@ using Demo.DataAccess.Data.Context;
 using Demo.DataAccess.Data.Repository;
 using Demo.DataAccess.Data.Repository.Classes;
 using Demo.DataAccess.Data.Repository.Interfaces;
+using Demo.DataAccess.Models.IdentityModule;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -72,6 +74,9 @@ namespace Demo.Prestation
 
             builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>(); 
+
+
 
 
             #endregion
@@ -110,7 +115,7 @@ namespace Demo.Prestation
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Register}/{id?}");
 
 
 
