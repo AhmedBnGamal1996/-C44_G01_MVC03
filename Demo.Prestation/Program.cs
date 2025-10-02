@@ -108,7 +108,9 @@ namespace Demo.Prestation
 
             app.UseRouting();
 
+            app.UseAuthentication();
 
+            app.UseAuthorization();
 
 
 

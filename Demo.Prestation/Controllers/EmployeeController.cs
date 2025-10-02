@@ -5,10 +5,14 @@ using Demo.BusinessLogic.Services.Interfaces;
 using Demo.DataAccess.Models.EmployeeModule;
 using Demo.DataAccess.Models.Shared;
 using Demo.Prestation.viewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Prestation.Controllers
 {
+
+    [Authorize]
+
     public class EmployeeController(IEmployeeService _employeeService ,  IWebHostEnvironment _env , ILogger<EmployeeController> _logger): Controller
     {
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Demo.Prestation.viewModels
+namespace Demo.Prestation.viewModels.Identity
 {
     public class LoginViewModel
     {

@@ -1,14 +1,18 @@
 ﻿using Demo.DataAccess.Models.IdentityModule;
-using Demo.Prestation.viewModels;
+using Demo.Prestation.viewModels.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Prestation.Controllers
 {
-    public class AccountController(UserManager<ApplicationUser> _userManager) : Controller
+
+    
+    public class AccountController(UserManager<ApplicationUser> _userManager , SignInManager<ApplicationUser> _signInManager) : Controller
     {
 
-        // Register 
+
+        #region Register
+          
 
         [HttpGet]
 
@@ -48,17 +52,99 @@ namespace Demo.Prestation.Controllers
 
         }
 
-        // Sign In 
 
-       
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #region  Login 
+
+        [HttpGet]
+            public IActionResult Login() => View();
+
+
 
         [HttpPost]
-        public IActionResult SignUp()
+
+        public IActionResult Login(LoginViewModel loginViewModel)
         {
-            return View("~/Views/Home/Index.cshtml");
+            if (!ModelState.IsValid) return View(loginViewModel);
+
+
+            var user = _userManager.FindByEmailAsync(loginViewModel.Email).Result;
+
+            if (user != null)
+
+            {
+
+                var flag = _userManager.CheckPasswordAsync(user, loginViewModel.Password).Result;
+
+                if (flag)
+                {
+                    var result = _signInManager.PasswordSignInAsync(user, loginViewModel.Password, loginViewModel.RememberMe, false).Result;
+
+
+                    if (result.IsNotAllowed)
+                    {
+                        ModelState.AddModelError(string.Empty, "You are not allowed to login");
+                    }
+
+                    if (result.IsLockedOut)
+                    {
+                        ModelState.AddModelError(string.Empty, "You are locked out");
+                    }
+
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+
+                }
+                
+                ModelState.AddModelError(string.Empty, "Invalid Login...");
+
+
+
+            }
+
+            return View(loginViewModel);
+
 
         }
-        // Sign Out
+
+
+
+        #endregion
+
+
+
+
+
+
+
+        #region  SignOuts
+
+        public new IActionResult SignOut()
+        {
+            _signInManager.SignOutAsync().GetAwaiter().GetResult();
+            return RedirectToAction("Login");
+        }
+
+
+
+        #endregion
 
 
 
