@@ -1,7 +1,10 @@
 ﻿using Demo.DataAccess.Models.IdentityModule;
+using Demo.DataAccess.Models.Shared;
 using Demo.Prestation.viewModels.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using Email = Demo.DataAccess.Models.Shared.Email;
 
 namespace Demo.Prestation.Controllers
 {
@@ -149,6 +152,54 @@ namespace Demo.Prestation.Controllers
 
 
 
+        #region  ForgetPassword
+
+        [HttpGet]
+        public  IActionResult ForgetPassword()
+        {
+            return View();
+
+
+        }
+        [HttpPost]
+        public IActionResult SendResetPasswordUrl( ForgetPasswordViewModel forgetPasswordViewModel)
+        {
+
+
+            if (!ModelState.IsValid)
+            {
+                var user = _userManager.FindByEmailAsync(forgetPasswordViewModel.Email).Result;
+
+                if(user is not null )
+                {
+                    var token = _userManager.GeneratePasswordResetTokenAsync(user).Result;
+                    var url = Url.Action("ResetPassword" , "Account" , new {email = forgetPasswordViewModel.Email , token = token}).; 
+
+
+                    var email = new Email()
+                    {
+                        To = forgetPasswordViewModel.Email,
+                        Subject = "Reset Password", 
+                        Body = url
+
+                    };
+
+
+
+                }
+
+
+            }
+
+
+        }
+
+
+
+
+
+
+        #endregion
 
 
 
