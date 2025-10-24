@@ -6,8 +6,8 @@ namespace Demo.Prestation.viewModels.Identity
     {
 
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Email Can not be Empty! ")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
 

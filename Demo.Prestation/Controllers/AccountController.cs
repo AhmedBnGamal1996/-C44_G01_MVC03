@@ -1,6 +1,8 @@
-﻿using Demo.DataAccess.Models.IdentityModule;
+﻿using Demo.BusinessLogic.Services.EmailSender;
+using Demo.DataAccess.Models.IdentityModule;
 using Demo.DataAccess.Models.Shared;
 using Demo.Prestation.viewModels.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
@@ -9,8 +11,8 @@ using Email = Demo.DataAccess.Models.Shared.Email;
 namespace Demo.Prestation.Controllers
 {
 
-    
-    public class AccountController(UserManager<ApplicationUser> _userManager , SignInManager<ApplicationUser> _signInManager) : Controller
+    // [Authorize]
+    public class AccountController(UserManager<ApplicationUser> _userManager , SignInManager<ApplicationUser> _signInManager , IEmailSender _emailSender) : Controller
     {
 
 
@@ -137,7 +139,9 @@ namespace Demo.Prestation.Controllers
 
 
 
-        #region  SignOuts
+        #region  SignOut
+
+        [HttpGet]
 
         public new IActionResult SignOut()
         {
@@ -173,7 +177,7 @@ namespace Demo.Prestation.Controllers
                 if(user is not null )
                 {
                     var token = _userManager.GeneratePasswordResetTokenAsync(user).Result;
-                    var url = Url.Action("ResetPassword" , "Account" , new {email = forgetPasswordViewModel.Email , token = token}).; 
+                    var url = Url.Action("ResetPassword" , "Account" , new {email = forgetPasswordViewModel.Email , token = token},Request.Scheme); 
 
 
                     var email = new Email()
@@ -184,13 +188,17 @@ namespace Demo.Prestation.Controllers
 
                     };
 
-
+                    _emailSender.SendEmail(email);
+                    return RedirectToAction("CheckYourInbox");
 
                 }
-
+                else 
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid Opertion Please Try Again...");
+                }
 
             }
-
+            return View(forgetPasswordViewModel);
 
         }
 
@@ -200,6 +208,64 @@ namespace Demo.Prestation.Controllers
 
 
         #endregion
+
+
+        [HttpGet]
+        public IActionResult CheckYourInbox()
+        {
+            return View();
+        }
+
+
+        #region ResetPassword
+
+        [HttpGet]
+
+        public IActionResult ResetPassword(string email , string token)
+        {
+            TempData["email"] = email;
+            TempData["token"] = token;
+            return View(); 
+        }
+
+        [HttpPost]
+
+        public IActionResult ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+        {
+            if(ModelState.IsValid)
+            {
+                var email = TempData["email"]as string;
+                var token = TempData["token"] as string;
+                var user = _userManager.FindByEmailAsync(email).Result;
+
+                if(user is not null )
+                {
+                    var resulT =  _userManager.ResetPasswordAsync(user, token, resetPasswordViewModel.NewPassword).Result;
+                    if(resulT.Succeeded)
+                    {
+                        return RedirectToAction("Login");
+                    }
+                   
+
+
+                }
+
+
+
+            }
+            ModelState.AddModelError(string.Empty, "Invalid Opertion Please Try Again...");
+
+            return View(resetPasswordViewModel);
+
+
+
+        }
+
+
+
+
+        #endregion
+
 
 
 

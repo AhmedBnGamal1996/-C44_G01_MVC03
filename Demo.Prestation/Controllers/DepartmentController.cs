@@ -25,6 +25,9 @@ namespace Demo.Prestation.Controllers
         // ViewBag [ UnSafe ] [ .Net 4.0 ] , Dynamic  
 
 
+
+       //  [AllowAnonymous]
+        
         [HttpGet]
 
 
