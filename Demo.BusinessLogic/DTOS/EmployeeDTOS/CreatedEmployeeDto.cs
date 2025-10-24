@@ -1,5 +1,6 @@
 ﻿using Demo.DataAccess.Models.EmployeeModule;
 using Demo.DataAccess.Models.Shared;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,6 +12,8 @@ namespace Demo.BusinessLogic.DTOS.EmployeeDTOS
 {
     public class CreatedEmployeeDto
     {
+
+
 
         [Required(ErrorMessage = "Name Can't Be Null")]
         [MaxLength(50, ErrorMessage = "Max length should be 50 character")]
@@ -43,6 +46,10 @@ namespace Demo.BusinessLogic.DTOS.EmployeeDTOS
         public Gender Gender { get; set; }
 
         public EmployeeType EmployeeType { get; set; }
+
+        public  int? DepartmentId { get; set; }
+
+        public IFormFile? Image { get; set; }
 
 
     }

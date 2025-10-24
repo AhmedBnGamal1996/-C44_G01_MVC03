@@ -18,6 +18,11 @@ namespace Demo.DataAccess.Data.Configurations
 
             builder.Property(D => D.ModifiedOn).HasDefaultValueSql("getdate()");
 
+            builder.HasMany(D=>D.Employees)
+                .WithOne(E=>E.Department)
+                .HasForeignKey(E=>E.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             base.Configure(builder);
 
 

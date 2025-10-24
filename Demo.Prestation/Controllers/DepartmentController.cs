@@ -5,21 +5,41 @@ using Demo.BusinessLogic.Services.Interfaces;
 using Demo.BusinessLogic.DTOS;
 using Demo.Prestation.viewModels;
 using Demo.BusinessLogic.DTOS.DepartmentDTOS;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Demo.Prestation.Controllers
 {
 
-
+    [Authorize]
     public class DepartmentController(IDepartmentService _departmentService , IWebHostEnvironment _env , ILogger<DepartmentController> _logger ) : Controller
     {
 
 
         #region Index 
+        // View Data , ViewBag ==> ViewStorage ==> Deal with the same storage 
+        // Extra info [ Extra Data ] 
+        // Send Controller ==> View 
+        // Send View ==> Partial View 
+        // Send View ==> Layout
+        // ViewData [ Safe ] [ .Net 3.5 ] 
+        // ViewBag [ UnSafe ] [ .Net 4.0 ] , Dynamic  
+
+
+
+       //  [AllowAnonymous]
+        
         [HttpGet]
+
+
         public IActionResult Index()
         {
+
+
             var departments = _departmentService.GetAllDepartments();
             return View(departments);
+        
+        
+        
         }
 
 
@@ -44,26 +64,31 @@ namespace Demo.Prestation.Controllers
         [HttpPost]
 
         // [ValidateAntiForgeryToken]  // Attribute ==> Action Filter 
-        public IActionResult Create(CreateDepartmentDto departmentDto)
+        public IActionResult Create(DepartmentViewModel departmentViewModel)
         {
             if(ModelState.IsValid)      // Server Side Validation
             {
                 try
                 {
 
-                   int result = _departmentService.AddDepartment(departmentDto);
+                   int result = _departmentService.AddDepartment(new CreateDepartmentDto()
+                   {
+                          Code = departmentViewModel.Code,
+                          Name = departmentViewModel.Name,
+                          Description = departmentViewModel.Description,
+                          DateOfCreation = departmentViewModel.CreatedOn
+                   });
+
+                    string message; 
+
                     if (result > 0)
-                    { 
-
-                        return RedirectToAction(nameof(Index)); 
-
-
-                        //return View(viewName: "Index");
-                    }
+                      message = "Department created successfully";
+                    
                     else
-                    {
-                        ModelState.AddModelError(string.Empty, "Department can not be created");
-                    }
+                        message = "Department can not be created";
+
+                    TempData["Message"] = message; 
+                    return RedirectToAction(nameof(Index) );
 
 
                 }
@@ -92,7 +117,7 @@ namespace Demo.Prestation.Controllers
 
             }
 
-                return View(departmentDto); 
+                return View(departmentViewModel); 
 
 
 
@@ -148,7 +173,7 @@ namespace Demo.Prestation.Controllers
             var department = _departmentService.GetDepartmentById(id.Value); 
             if (department == null) return NotFound();
 
-            var departmentVM = new DepartmentEditViewModel
+            var departmentVM = new DepartmentViewModel
             {
                 Code = department.Code,
                 Name = department.Name,
@@ -170,8 +195,8 @@ namespace Demo.Prestation.Controllers
 
         [HttpPost]
 
-        public IActionResult Edit(int? id,  DepartmentEditViewModel departmentVM)
-        {
+        public IActionResult Edit(int? id,  DepartmentViewModel departmentVM)
+            {
             if (ModelState.IsValid)
             {
 
@@ -247,16 +272,6 @@ namespace Demo.Prestation.Controllers
         #region Delete
         // GET ==> render the view 
 
-
-
-        //[HttpGet]
-        //public IActionResult Delete(int? id)
-        //{
-        //    if (!id.HasValue) return BadRequest();
-        //    var department = _departmentService.GetDepartmentById(id.Value);
-        //    if (department == null) return NotFound();
-        //    return View(department);
-        //}
 
 
 

@@ -1,12 +1,15 @@
 ﻿using Demo.DataAccess.Models.DepartmentModule;
 using Demo.DataAccess.Models.EmployeeModule;
+using Demo.DataAccess.Models.IdentityModule;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Reflection;
 
 
 
 namespace Demo.DataAccess.Data.Context
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
     {
 
 
@@ -29,15 +32,21 @@ namespace Demo.DataAccess.Data.Context
 
 
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+           //  modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         
-        
+            base.OnModelCreating(modelBuilder);
+
+
+            // modelBuilder.Entity<IdentityRole>().ToTable("Users");
+
+
         }
 
 
-         public DbSet<Department> Departments { get; set; } 
+
+        public DbSet<Department> Departments { get; set; } 
          public DbSet<Employee> Employees { get; set; }
 
 

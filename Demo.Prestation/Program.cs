@@ -1,10 +1,14 @@
 using Demo.BusinessLogic.Mappings;
+using Demo.BusinessLogic.Services.AttachmentService;
 using Demo.BusinessLogic.Services.Classes;
+using Demo.BusinessLogic.Services.EmailSender;
 using Demo.BusinessLogic.Services.Interfaces;
 using Demo.DataAccess.Data.Context;
 using Demo.DataAccess.Data.Repository;
 using Demo.DataAccess.Data.Repository.Classes;
 using Demo.DataAccess.Data.Repository.Interfaces;
+using Demo.DataAccess.Models.IdentityModule;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,11 +31,11 @@ namespace Demo.Prestation
             #region DI Container 
 
 
-              
+
 
             builder.Services.AddControllersWithViews(options =>
             {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); 
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
 
 
@@ -39,15 +43,17 @@ namespace Demo.Prestation
             // builder.Services.AddScoped<ApplicationDbContext>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-
+            { 
             // options.UseSqlServer("ConnectionString")
 
             // options.UseSqlServer(builder.Configuration["ConnectionString:DefaultConnectiosString"])
             // options.UseSqlServer(builder.Configuration.GetSection("ConnectionString")["DefaultConnectionString"]); 
 
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"))
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+                options.UseLazyLoadingProxies();
 
-            );
+
+            });
 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             
@@ -59,11 +65,20 @@ namespace Demo.Prestation
 
             builder.Services.AddScoped<IEmployeeService , EmployeeService>();
 
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
             // builder.Services.AddAutoMapper(cfg => { } , typeof(MappingProfile).Assembly);
 
+            builder.Services.AddScoped<IEmailSender, EmailSender>();
 
             builder.Services.AddAutoMapper(mapping => mapping.AddProfile(new MappingProfile()));
+
+            builder.Services.AddScoped<IAttachmentService, AttachmentService>();
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders(); 
+
 
 
 
@@ -96,14 +111,16 @@ namespace Demo.Prestation
 
             app.UseRouting();
 
+            app.UseAuthentication();
 
+            app.UseAuthorization();
 
 
 
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Register}/{id?}");
 
 
 

@@ -4,11 +4,16 @@ using Demo.BusinessLogic.Services.Classes;
 using Demo.BusinessLogic.Services.Interfaces;
 using Demo.DataAccess.Models.EmployeeModule;
 using Demo.DataAccess.Models.Shared;
+using Demo.Prestation.viewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Prestation.Controllers
 {
-    public class EmployeeController(IEmployeeService _employeeService , IWebHostEnvironment _env , ILogger<EmployeeController> _logger): Controller
+
+    [Authorize]
+
+    public class EmployeeController(IEmployeeService _employeeService ,  IWebHostEnvironment _env , ILogger<EmployeeController> _logger): Controller
     {
 
 
@@ -21,11 +26,11 @@ namespace Demo.Prestation.Controllers
         #region Index 
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string? EmployeeSearchName)
         {
 
 
-            var employees = _employeeService.GetAllEmployees();
+            var employees = _employeeService.GetAllEmployees(EmployeeSearchName);
             return View(employees);
         }
 
@@ -39,13 +44,13 @@ namespace Demo.Prestation.Controllers
 
         #region Create
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create()   // CLR Action Injection
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(CreatedEmployeeDto employeeDto)
+        public IActionResult Create(EmployeeViewModel employeeViewModel )
         {
 
             if (ModelState.IsValid)      // Server Side Validation
@@ -53,7 +58,22 @@ namespace Demo.Prestation.Controllers
                 try
                 {
 
-                    int result = _employeeService.CreateEmployee(employeeDto);
+                    int result = _employeeService.CreateEmployee(new CreatedEmployeeDto ()
+                    {
+                        Name = employeeViewModel.Name,
+                        Age = employeeViewModel.Age,
+                        Address = employeeViewModel.Address,
+                        Salary = employeeViewModel.Salary,
+                        IsActive = employeeViewModel.IsActive,
+                        Email = employeeViewModel.Email,
+                        PhoneNumber = employeeViewModel.PhoneNumber,
+                        HiringDate = employeeViewModel.HiringDate,
+                        EmployeeType = employeeViewModel.EmployeeType,
+                        DepartmentId = employeeViewModel.DepartmentId,
+                        Gender = employeeViewModel.Gender ,
+                        Image = employeeViewModel.Image
+
+                    });
                     if (result > 0)
                     {
 
@@ -94,7 +114,7 @@ namespace Demo.Prestation.Controllers
 
             }
 
-            return View(employeeDto);
+            return View(employeeViewModel);
 
             
         }
@@ -103,6 +123,12 @@ namespace Demo.Prestation.Controllers
 
 
         #endregion
+
+
+
+
+
+
 
 
         #region Details 
@@ -124,6 +150,9 @@ namespace Demo.Prestation.Controllers
         #endregion
 
 
+
+
+
         #region Edit 
 
         [HttpGet]
@@ -133,9 +162,10 @@ namespace Demo.Prestation.Controllers
             if(!id.HasValue) return BadRequest();
             var employee = _employeeService.GetEmployeeById(id.Value); 
             if (employee == null) return NotFound();
-            var employeeDto = new UpdatedEmployeeDto()
+
+
+            var employeeViewModel = new EmployeeViewModel()
             {
-                Id = employee.Id,
                 Name = employee.Name,
                 Age = employee.Age,
                 IsActive = employee.IsActive,
@@ -145,32 +175,49 @@ namespace Demo.Prestation.Controllers
                 HiringDate = employee.HiringDate,
                 Gender = Enum.Parse<Gender>(employee.Gender),
                 EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
-                Address = employee.Address
+                Address = employee.Address ,
+                DepartmentId = employee.DepartmentId
 
 
-            };
+            }; 
         
         
-            return View(employeeDto);
+            return View(employeeViewModel);
         }
 
 
         [HttpPost]
 
-        public IActionResult Edit([FromRoute] int? id , UpdatedEmployeeDto employeeDto )
+        public IActionResult Edit([FromRoute] int? id , EmployeeViewModel employeeViewModel)
         {
-            if(!id.HasValue || id != employeeDto.Id) return BadRequest();
+            if(!id.HasValue ) return BadRequest();
 
-            if (!ModelState.IsValid) return View(employeeDto); 
+            if (!ModelState.IsValid) return View(employeeViewModel); 
 
             try
             {
-                int result = _employeeService.UpdateEmployee(employeeDto);
+                int result = _employeeService.UpdateEmployee(new UpdatedEmployeeDto()
+                {
+                    Address = employeeViewModel.Address,
+                    Age = employeeViewModel.Age,
+                    Gender = employeeViewModel.Gender, 
+                    IsActive = employeeViewModel.IsActive,
+                    Email = employeeViewModel.Email,
+                    HiringDate = employeeViewModel.HiringDate,
+                    EmployeeType = employeeViewModel.EmployeeType,
+                    Name = employeeViewModel.Name,
+                    Salary = employeeViewModel.Salary,
+                    PhoneNumber = employeeViewModel.PhoneNumber,
+                    DepartmentId = employeeViewModel.DepartmentId, 
+                    Id = id.Value
+
+
+                });
                 if (result > 0) return RedirectToAction(nameof(Index));
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Employee can not updated");
-                    return View(employeeDto); 
+                    return View(employeeViewModel); 
                 }
             }
             catch (Exception ex)
@@ -178,7 +225,7 @@ namespace Demo.Prestation.Controllers
                 if (_env.IsDevelopment())
                 {
                     _logger.LogError($"Employee Can not be Updated because : {ex.Message}");
-                    return View(employeeDto);
+                    return View(employeeViewModel);
 
                 }
                 else
