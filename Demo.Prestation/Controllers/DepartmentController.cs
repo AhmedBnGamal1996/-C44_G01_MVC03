@@ -5,11 +5,12 @@ using Demo.BusinessLogic.Services.Interfaces;
 using Demo.BusinessLogic.DTOS;
 using Demo.Prestation.viewModels;
 using Demo.BusinessLogic.DTOS.DepartmentDTOS;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Demo.Prestation.Controllers
 {
 
-
+    [Authorize]
     public class DepartmentController(IDepartmentService _departmentService , IWebHostEnvironment _env , ILogger<DepartmentController> _logger ) : Controller
     {
 
@@ -25,6 +26,8 @@ namespace Demo.Prestation.Controllers
 
 
 
+       //  [AllowAnonymous]
+        
         [HttpGet]
 
 

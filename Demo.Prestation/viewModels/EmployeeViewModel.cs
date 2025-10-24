@@ -44,13 +44,13 @@ namespace Demo.Prestation.viewModels
         public int? DepartmentId { get; set; }
 
 
+        public IFormFile? Image { get; set; }
 
 
 
 
 
-
-    }
+        }
 
 
 

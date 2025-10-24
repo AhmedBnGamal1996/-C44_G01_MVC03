@@ -5,10 +5,14 @@ using Demo.BusinessLogic.Services.Interfaces;
 using Demo.DataAccess.Models.EmployeeModule;
 using Demo.DataAccess.Models.Shared;
 using Demo.Prestation.viewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Prestation.Controllers
 {
+
+    [Authorize]
+
     public class EmployeeController(IEmployeeService _employeeService ,  IWebHostEnvironment _env , ILogger<EmployeeController> _logger): Controller
     {
 
@@ -66,7 +70,9 @@ namespace Demo.Prestation.Controllers
                         HiringDate = employeeViewModel.HiringDate,
                         EmployeeType = employeeViewModel.EmployeeType,
                         DepartmentId = employeeViewModel.DepartmentId,
-                        Gender = employeeViewModel.Gender
+                        Gender = employeeViewModel.Gender ,
+                        Image = employeeViewModel.Image
+
                     });
                     if (result > 0)
                     {
@@ -119,6 +125,12 @@ namespace Demo.Prestation.Controllers
         #endregion
 
 
+
+
+
+
+
+
         #region Details 
 
 
@@ -136,6 +148,9 @@ namespace Demo.Prestation.Controllers
         }
 
         #endregion
+
+
+
 
 
         #region Edit 
