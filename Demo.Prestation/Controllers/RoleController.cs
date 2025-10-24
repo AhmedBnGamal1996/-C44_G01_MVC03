@@ -1,10 +1,16 @@
-﻿using Demo.Prestation.viewModels.Identity;
+﻿using Demo.DataAccess.Models.IdentityModule;
+using Demo.Prestation.viewModels.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Demo.Prestation.Controllers
 {
-    public class RoleController(RoleManager<IdentityRole> _roleManager ,  IWebHostEnvironment _env  ) : Controller
+
+    [Authorize(Roles = "Admin")]
+    public class RoleController(RoleManager<IdentityRole> _roleManager ,  IWebHostEnvironment _env , UserManager<ApplicationUser> userManager ) : Controller
     {
         #region Index 
 
@@ -55,15 +61,23 @@ namespace Demo.Prestation.Controllers
 
         [HttpGet]
 
-        public IActionResult Edit(string? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null) return BadRequest();
             var role = _roleManager.FindByIdAsync(id).Result;
             if (role == null) return NotFound();
+
+            var users = await userManager.Users.ToListAsync();
             return View(new RoleViewModel()
             {
                 Id = role.Id,
-                Name = role.Name
+                Name = role.Name,
+                Users = users.Select(User => new UserRoleViewModel()
+                {
+                    UserId = User.Id,
+                    UserName = User.UserName!,
+                    IsSelected = userManager.IsInRoleAsync(User, role.Name).Result
+                }).ToList()
             });
 
         }
@@ -75,7 +89,7 @@ namespace Demo.Prestation.Controllers
 
         [HttpPost]
 
-        public IActionResult Edit(string id , RoleViewModel roleViewModel)
+        public async Task<IActionResult> Edit(string id , RoleViewModel roleViewModel)
         {
           if (!ModelState.IsValid) return View(roleViewModel);
           if(id != roleViewModel.Id) return BadRequest();
@@ -88,6 +102,35 @@ namespace Demo.Prestation.Controllers
                 if (role == null) return BadRequest();
                 role.Name = roleViewModel.Name;
                 var result = _roleManager.UpdateAsync(role).Result;
+
+                foreach(var userRole in roleViewModel.Users)
+                {
+                    var user = await userManager.FindByIdAsync(userRole.UserId);
+
+                    if(userRole.IsSelected && !(await userManager.IsInRoleAsync(user,role.Name))  )
+                    {
+                        await userManager.AddToRoleAsync(user, role.Name);
+
+                    }
+
+
+
+                    else if(!userRole.IsSelected && (await userManager.IsInRoleAsync(user, role.Name) )  )
+                    {
+
+
+
+                       await userManager.RemoveFromRoleAsync(user, role.Name);
+
+
+                    }
+
+
+
+                }
+
+
+
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index");

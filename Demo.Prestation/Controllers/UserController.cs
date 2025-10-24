@@ -1,10 +1,13 @@
 ﻿using Demo.DataAccess.Models.IdentityModule;
 using Demo.Prestation.viewModels.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Prestation.Controllers
 {
+    [Authorize(Roles  = "Admin")]
+
     public class UserController(UserManager<ApplicationUser> _userManager , IWebHostEnvironment _env) : Controller
     {
         #region Index
@@ -66,7 +69,7 @@ namespace Demo.Prestation.Controllers
 
 
 
-
+         
         #region Edit
 
 
